@@ -1,0 +1,13 @@
+﻿@model LoginModel
+
+<form action="/Home/Account" method="POST">
+    @Html.LabelFor(x => Model.login)
+    @Html.EditorFor(x => Model.login)
+    @Html.LabelFor(x => Model.password)
+    @Html.EditorFor(x => Model.password, new { type = "password" })<br/>
+    <input type="submit" value="Send"/>
+</form>
+@if (!Model?.Success ?? false)
+{
+<div>Имя пользователя или пароль неверны</div>
+}
