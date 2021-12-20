@@ -51,9 +51,8 @@ namespace WebApplication1.Controllers
             {
                 UserService userService = new UserService();
                 var CurrentUser1 = userService.Users.Where(x => x.login == model.login && x.password == model.password);
-                TempData["CurrentData"] = CurrentUser1.First().fullname + "\nЛогин: " + CurrentUser1.First().login + "\nДата рождения: " + CurrentUser1.First().birthday;
+                TempData["CurrentData"] = CurrentUser1.First().fullname + "\nДата рождения: " + CurrentUser1.First().birthday;
                 return RedirectToAction("Privacy", "Home");
-
             }
             return RedirectToAction("Error", "Home");
         }
