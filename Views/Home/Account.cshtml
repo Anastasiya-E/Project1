@@ -7,6 +7,9 @@
     @Html.EditorFor(x => Model.password, new { type = "password" })<br/>
     <input type="submit" value="Send"/>
 </form>
+
+
+
 @if (!Model?.Success ?? false)
 {
 <div>Имя пользователя или пароль неверны</div>

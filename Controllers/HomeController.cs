@@ -20,9 +20,17 @@ namespace WebApplication1.Controllers
             _userService = new UserService();
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
+            ViewData["Title"] = TempData["CurrentData"];
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Privacy(LoginModel model)
+        {
+            return View(model);
         }
         
         public IActionResult Index()
@@ -38,19 +46,28 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult Account(LoginModel model)
         {
-
-            model.Success = _userService.CheckCredentials(model.login, model.password);
-            if (model.Success ?? false)
+            model.Success = _userService?.CheckCredentials(model.login, model.password);
+            if (model.Success.HasValue && model.Success.Value)
             {
-                return RedirectToAction("Index", "Home");
+                UserService userService = new UserService();
+                var CurrentUser1 = userService.Users.Where(x => x.login == model.login && x.password == model.password);
+                TempData["CurrentData"] = CurrentUser1.First().fullname + "\nЛогин: " + CurrentUser1.First().login + "\nДата рождения: " + CurrentUser1.First().birthday;
+                return RedirectToAction("Privacy", "Home");
+
             }
-                return View(model);
+            return RedirectToAction("Error", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public IActionResult Index(LoginModel model)
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }
